@@ -1,4 +1,5 @@
 //package com.ll.yahooFiance.Home;
+//
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
@@ -42,8 +43,64 @@
 //        }
 //    }
 //
+//    //    @GetMapping("/{symbol}/news")
+////    public ResponseEntity<String> getStockNews(@PathVariable String symbol) {
+////        try {
+////            String stockNews = yahooFinanceService.getApiResponse("/v10/finance/quoteSummary", symbol, "news");
+////            return ResponseEntity.ok(stockNews);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+////        }
+////    }
+//    @GetMapping("/{symbol}/news")
+//    public ResponseEntity<String> getStockNews(@PathVariable String symbol) {
+//        try {
+//            String stockNews = yahooFinanceService.getApiResponse("/v10/finance/news", symbol, "category,summary");
+//            return ResponseEntity.ok(stockNews);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+//
+//
+////    @GetMapping("/marketcap")
+////    public ResponseEntity<String> getMarketCapRankings() {
+////        try {
+////            String marketCapRankings = yahooFinanceService.getApiResponse("/v1/finance/screener/predefined/saved", "", "industry_basic_tech_computer_services");
+////            return ResponseEntity.ok(marketCapRankings);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+////        }
+////    }
+//
+////    @GetMapping("/marketcap")
+////    public ResponseEntity<String> getMarketCapRankings() {
+////        try {
+////            String marketCapRankings = yahooFinanceService.getApiResponse("/v1/finance/screener/predefined/saved", "1", "count=10&offset=0");
+////            return ResponseEntity.ok(marketCapRankings);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+////        }
+////    }
+//
+//    @GetMapping("/marketcap")
+//    public ResponseEntity<String> getMarketCapRankings() {
+//        try {
+//            String marketCapRankings = yahooFinanceService.getApiResponse("/v1/finance/screener/predefined/saved", "", "industry_basic_tech_computer_services");
+//            return ResponseEntity.ok(marketCapRankings);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+//
+//
 //}
-
+//위에거 잘됨
 package com.ll.yahooFiance.Home;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,15 +112,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/stocks")
-public class StockController {
+public class YahooStockController {
 
     private final YahooFinanceService yahooFinanceService;
 
     @Autowired
-    public StockController(YahooFinanceService yahooFinanceService) {
+    public YahooStockController(YahooFinanceService yahooFinanceService) {
         this.yahooFinanceService = yahooFinanceService;
     }
 
@@ -75,6 +133,10 @@ public class StockController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -86,52 +148,23 @@ public class StockController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    //    @GetMapping("/{symbol}/news")
-//    public ResponseEntity<String> getStockNews(@PathVariable String symbol) {
-//        try {
-//            String stockNews = yahooFinanceService.getApiResponse("/v10/finance/quoteSummary", symbol, "news");
-//            return ResponseEntity.ok(stockNews);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
     @GetMapping("/{symbol}/news")
     public ResponseEntity<String> getStockNews(@PathVariable String symbol) {
         try {
-            String stockNews = yahooFinanceService.getApiResponse("/v10/finance/news", symbol, "category,summary");
+            String stockNews = yahooFinanceService.getStockNews(symbol);
             return ResponseEntity.ok(stockNews);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException | URISyntaxException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-//    @GetMapping("/marketcap")
-//    public ResponseEntity<String> getMarketCapRankings() {
-//        try {
-//            String marketCapRankings = yahooFinanceService.getApiResponse("/v1/finance/screener/predefined/saved", "", "industry_basic_tech_computer_services");
-//            return ResponseEntity.ok(marketCapRankings);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-
-//    @GetMapping("/marketcap")
-//    public ResponseEntity<String> getMarketCapRankings() {
-//        try {
-//            String marketCapRankings = yahooFinanceService.getApiResponse("/v1/finance/screener/predefined/saved", "1", "count=10&offset=0");
-//            return ResponseEntity.ok(marketCapRankings);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
 
     @GetMapping("/marketcap")
     public ResponseEntity<String> getMarketCapRankings() {
@@ -141,8 +174,14 @@ public class StockController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-
 }
+
+
+
