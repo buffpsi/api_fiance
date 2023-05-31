@@ -1,5 +1,6 @@
 package com.ll.yahooFiance.yahoo;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -14,25 +15,31 @@ public class YahooFinanceService {
 
     private static final String API_BASE_URL = "https://query1.finance.yahoo.com";
 
-    public String getApiResponse(String endpoint, String symbol, String modules) throws IOException {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+    private final CloseableHttpClient httpClient;
+
+    public YahooFinanceService() {
+        this.httpClient = HttpClients.createDefault();
+    }
+
+    public String getCompanyInfo(String symbol) throws IOException {
+        String endpoint = "/v10/finance/quoteSummary";
+        String modules = "summaryDetail";
         String url = API_BASE_URL + endpoint + "/" + symbol + "?modules=" + modules;
         HttpGet request = new HttpGet(url);
         BufferedReader reader = null;
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(httpClient.execute(request).getEntity().getContent()));
-            StringBuilder response = new StringBuilder();
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            StringBuilder responseBody = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                response.append(line);
+                responseBody.append(line);
             }
-            return response.toString();
+            return responseBody.toString();
         } finally {
             if (reader != null) {
                 reader.close();
             }
-            httpClient.close();
         }
     }
 }

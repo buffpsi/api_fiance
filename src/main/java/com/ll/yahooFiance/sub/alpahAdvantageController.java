@@ -9,7 +9,8 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/alphaStocks")
-class FinancialController {
+
+public class alpahAdvantageController {
 
     private final String apiKey = "..";
 
@@ -34,10 +35,11 @@ class FinancialController {
         return restTemplate.getForObject(url, String.class);
     }
 
-    @GetMapping("/cashFlow/{symbol}")
+    @GetMapping("/cashflow/{symbol}")
     public String getCashFlow(@PathVariable String symbol) {
         String url = "https://www.alphavantage.co/query?function=CASH_FLOW&symbol=" + symbol + "&apikey=" + apiKey;
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(url, String.class);
     }
+
 }

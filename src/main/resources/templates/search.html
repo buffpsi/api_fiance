@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Search</title>
+</head>
+<body>
+<input type="text" id="symbolInput" placeholder="Enter stock symbol">
+<button onclick="searchCompanyInfo()">click</button>
+<br>
+<div id="companyInfo"></div>
+</body>
+<script>
+    function searchCompanyInfo() {
+        var symbol = document.getElementById("symbolInput").value;
+        fetch('/yahooStocks/' + symbol + '/companyInfo')
+            .then(response => response.json())
+            .then(data => {
+                var companyInfo = "";
+                companyInfo += "previousClose: 이전 거래일의 종가는 " + data.previousClose + " 달러입니다.<br>";
+                companyInfo += "open: 현재 거래일의 시가는 " + data.open + " 달러입니다.<br>";
+                companyInfo += "dividendRate: 배당금은 " + data.dividendRate + " 달러입니다.<br>";
+                companyInfo += "dividendYield: 배당 수익률은 " + data.dividendYield + "%입니다.<br>";
+                companyInfo += "exDividendDate: 최종 배당 기준일은 " + data.exDividendDate + "입니다.<br>";
+                companyInfo += "marketCap: 시가 총액은 " + data.marketCap + " 달러입니다.<br>";
+                companyInfo += "trailingPE: 트레일링 P/E 비율은 " + data.trailingPE + "입니다.<br>";
+                companyInfo += "forwardPE: 포워드 P/E 비율은 " + data.forwardPE + "입니다.<br>";
+                document.getElementById("companyInfo").innerHTML = companyInfo;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+</html>
