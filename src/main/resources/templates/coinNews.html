@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Coin News</title>
+</head>
+<body>
+<h1>Coin News</h1>
+<ul>
+    <li th:each="item : ${coinNewsData.items}">
+        <h3 th:text="${item.title}"></h3>
+        <p th:text="${item.lead}"></p>
+        <a th:href="@{${item.url}}">Read more</a>
+    </li>
+</ul>
+</body>
+</html>

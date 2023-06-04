@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/alphaStocks")
-
 public class alpahAdvantageController {
 
     private final String apiKey = "..";
