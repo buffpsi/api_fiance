@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class CoinNewsController {
@@ -14,9 +15,9 @@ public class CoinNewsController {
         this.coinNewsService = coinNewsService;
     }
 
-    @GetMapping("/coinNews")
-    public String getCoinNews(Model model) {
-        CoinNewsData coinNewsData = coinNewsService.getCoinNewsData();
+    @GetMapping("/coinNews/{sectionCode}")
+    public String getCoinNews(@PathVariable String sectionCode, Model model) {
+        CoinNewsData coinNewsData = coinNewsService.getCoinNewsData(sectionCode);
         model.addAttribute("coinNewsData", coinNewsData);
         return "coinNews";
     }
